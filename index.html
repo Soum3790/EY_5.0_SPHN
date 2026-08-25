@@ -1,105 +1,188 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Soumajit Dholey</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <header>
-      <div class="container navbar">
-        <div class="brand">
-          <div class="brand-mark">S</div>
-          <span>StoreFront</span>
-        </div>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Arc & Alder | Curated essentials</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+	<style>
+		:root {
+			--ink: #17251f;
+			--muted: #6a746d;
+			--paper: #f8f7f2;
+			--surface: #ffffff;
+			--line: #e7e8df;
+			--green: #356b52;
+			--green-dark: #244937;
+			--coral: #df745c;
+			--yellow: #f3c95d;
+			--shadow: 0 14px 40px rgba(28, 49, 39, 0.08);
+		}
 
-        <nav class="nav-links" aria-label="Main navigation">
-          <a href="#home">Home</a>
-          <a href="#shop">Shop</a>
-          <a href="#new">New Arrivals</a>
-          <a href="#deals">Deals</a>
-          <a href="#reviews">Reviews</a>
-        </nav>
+		* { box-sizing: border-box; }
+		body { margin: 0; color: var(--ink); background: var(--paper); font-family: "DM Sans", sans-serif; }
+		button, input, select { font: inherit; }
+		button { cursor: pointer; }
+		.topbar { background: var(--green-dark); color: #f7f5ed; font-size: 0.74rem; letter-spacing: 0.08em; text-align: center; padding: 9px 16px; text-transform: uppercase; }
+		header { background: var(--surface); border-bottom: 1px solid var(--line); }
+		.nav { align-items: center; display: flex; gap: 34px; justify-content: space-between; margin: auto; max-width: 1240px; padding: 22px 28px; }
+		.brand { color: var(--ink); font: 700 1.35rem "Playfair Display", serif; letter-spacing: 0.02em; text-decoration: none; }
+		.brand span { color: var(--coral); }
+		.nav-links { display: flex; gap: 25px; }
+		.nav-links a { color: var(--muted); font-size: 0.87rem; text-decoration: none; }
+		.nav-links a:hover { color: var(--green); }
+		.cart-button { align-items: center; background: transparent; border: 1px solid var(--line); border-radius: 99px; color: var(--ink); display: flex; gap: 9px; padding: 9px 14px; }
+		.cart-count { align-items: center; background: var(--coral); border-radius: 50%; color: white; display: inline-flex; font-size: 0.7rem; height: 21px; justify-content: center; width: 21px; }
+		main { margin: auto; max-width: 1240px; padding: 65px 28px 90px; }
+		.intro { align-items: end; display: flex; gap: 30px; justify-content: space-between; margin-bottom: 43px; }
+		.eyebrow { color: var(--coral); font-size: 0.74rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+		h1 { font: 700 clamp(2.8rem, 6vw, 5.7rem)/0.93 "Playfair Display", serif; letter-spacing: -0.04em; margin: 13px 0 17px; max-width: 660px; }
+		.intro p { color: var(--muted); line-height: 1.6; margin: 0; max-width: 420px; }
+		.controls { align-items: center; border-bottom: 1px solid var(--line); display: flex; gap: 14px; justify-content: space-between; padding-bottom: 19px; }
+		.search-wrap { position: relative; width: min(380px, 100%); }
+		.search-icon { color: var(--muted); left: 14px; position: absolute; top: 11px; }
+		#search { background: white; border: 1px solid var(--line); border-radius: 8px; padding: 11px 14px 11px 40px; width: 100%; }
+		#search:focus, #sort:focus { border-color: var(--green); outline: 2px solid rgba(53, 107, 82, 0.14); }
+		.control-right { align-items: center; display: flex; gap: 13px; }
+		.result-count { color: var(--muted); font-size: 0.83rem; }
+		#sort { background: white; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); padding: 11px 34px 11px 12px; }
+		.category-bar { display: flex; gap: 9px; overflow-x: auto; padding: 19px 0 27px; scrollbar-width: none; }
+		.category-bar::-webkit-scrollbar { display: none; }
+		.category { background: transparent; border: 1px solid var(--line); border-radius: 99px; color: var(--muted); padding: 9px 16px; white-space: nowrap; }
+		.category:hover, .category.active { background: var(--green); border-color: var(--green); color: white; }
+		.grid { display: grid; gap: 30px 18px; grid-template-columns: repeat(4, 1fr); }
+		.product-card { min-width: 0; }
+		.image-box { align-items: center; background: #f0efe9; display: flex; height: 315px; justify-content: center; overflow: hidden; position: relative; }
+		.image-box img { mix-blend-mode: multiply; height: 78%; object-fit: contain; transition: transform 350ms ease; width: 78%; }
+		.product-card:hover img { transform: scale(1.07); }
+		.add-button { align-items: center; background: var(--green-dark); border: 0; border-radius: 50%; bottom: 14px; color: white; display: flex; font-size: 1.4rem; height: 43px; justify-content: center; opacity: 0; position: absolute; right: 14px; transform: translateY(7px); transition: opacity 200ms, transform 200ms; width: 43px; }
+		.product-card:hover .add-button, .add-button:focus { opacity: 1; transform: translateY(0); }
+		.product-info { padding: 15px 2px 0; }
+		.product-category { color: var(--coral); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+		.product-name { font-size: 0.95rem; font-weight: 600; line-height: 1.35; margin: 6px 0 10px; }
+		.price-row { align-items: center; display: flex; justify-content: space-between; }
+		.price { font-weight: 700; }
+		.rating { color: #aa7d17; font-size: 0.78rem; }
+		.status { color: var(--muted); grid-column: 1 / -1; padding: 70px 0; text-align: center; }
+		.spinner { animation: spin 800ms linear infinite; border: 3px solid var(--line); border-top-color: var(--green); border-radius: 50%; display: inline-block; height: 30px; margin-bottom: 14px; width: 30px; }
+		@keyframes spin { to { transform: rotate(360deg); } }
+		.drawer-backdrop { background: rgba(23, 37, 31, 0.34); inset: 0; opacity: 0; pointer-events: none; position: fixed; transition: opacity 220ms; z-index: 3; }
+		.drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+		.cart-drawer { background: var(--surface); box-shadow: -10px 0 40px rgba(23, 37, 31, 0.14); height: 100%; max-width: 410px; padding: 28px; position: absolute; right: 0; transform: translateX(100%); transition: transform 250ms ease; width: 100%; }
+		.drawer-backdrop.open .cart-drawer { transform: translateX(0); }
+		.drawer-heading { align-items: center; display: flex; justify-content: space-between; }
+		.drawer-heading h2 { font: 700 1.8rem "Playfair Display", serif; margin: 0; }
+		.close-button { background: transparent; border: 0; color: var(--muted); font-size: 1.5rem; }
+		.cart-items { border-top: 1px solid var(--line); margin-top: 24px; max-height: 60vh; overflow-y: auto; }
+		.cart-item { align-items: center; border-bottom: 1px solid var(--line); display: flex; gap: 12px; padding: 15px 0; }
+		.cart-item img { background: #f0efe9; height: 66px; object-fit: contain; padding: 8px; width: 66px; }
+		.cart-item-info { flex: 1; font-size: 0.84rem; }
+		.cart-item-info strong { display: block; line-height: 1.3; margin-bottom: 5px; }
+		.remove { background: none; border: 0; color: var(--coral); font-size: 0.75rem; padding: 0; }
+		.drawer-footer { border-top: 1px solid var(--line); bottom: 28px; left: 28px; padding-top: 18px; position: absolute; right: 28px; }
+		.total { display: flex; font-weight: 700; justify-content: space-between; margin-bottom: 17px; }
+		.checkout { background: var(--coral); border: 0; border-radius: 6px; color: white; font-weight: 700; padding: 13px; width: 100%; }
+		@media (max-width: 800px) { .grid { grid-template-columns: repeat(2, 1fr); } .image-box { height: 260px; } .nav-links { display: none; } }
+		@media (max-width: 560px) { main { padding: 42px 18px 70px; } .nav { padding: 18px; } .intro { align-items: start; flex-direction: column; margin-bottom: 30px; } .intro p { font-size: 0.9rem; } .controls { align-items: stretch; flex-direction: column; } .control-right { justify-content: space-between; } .grid { gap: 25px 12px; } .image-box { height: 205px; } .product-name { font-size: 0.84rem; } }
+	</style>
+</head>
+<body>
+	<div class="topbar">Free delivery on orders over $75 · Spring collection now live</div>
+	<header>
+		<nav class="nav" aria-label="Main navigation">
+			<a class="brand" href="#">arc <span>&</span> alder</a>
+			<div class="nav-links"><a href="#shop">Shop all</a><a href="#shop">New arrivals</a><a href="#shop">About us</a></div>
+			<button class="cart-button" id="cartToggle" type="button" aria-label="Open shopping bag">Bag <span class="cart-count" id="cartCount">0</span></button>
+		</nav>
+	</header>
+	<main id="shop">
+		<section class="intro">
+			<div><div class="eyebrow">The considered edit</div><h1>Things made for living well.</h1></div>
+			<p>Useful objects, small luxuries, and everyday pieces chosen to bring a little more beauty to your routine.</p>
+		</section>
+		<section class="controls" aria-label="Product controls">
+			<label class="search-wrap"><span class="search-icon" aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search the collection..." aria-label="Search products" /></label>
+			<div class="control-right"><span class="result-count" id="resultCount">Loading collection...</span><select id="sort" aria-label="Sort products"><option value="featured">Sort: Featured</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option><option value="rating">Top rated</option></select></div>
+		</section>
+		<div class="category-bar" id="categories" aria-label="Product categories"></div>
+		<section class="grid" id="productGrid" aria-live="polite"><div class="status"><span class="spinner"></span><br />Gathering the collection...</div></section>
+	</main>
+	<div class="drawer-backdrop" id="drawerBackdrop">
+		<aside class="cart-drawer" aria-label="Shopping bag" role="dialog">
+			<div class="drawer-heading"><h2>Your bag</h2><button class="close-button" id="closeCart" type="button" aria-label="Close shopping bag">×</button></div>
+			<div class="cart-items" id="cartItems"><div class="status">Your bag is waiting for something good.</div></div>
+			<div class="drawer-footer"><div class="total"><span>Total</span><span id="cartTotal">$0.00</span></div><button class="checkout" type="button">Continue to checkout</button></div>
+		</aside>
+	</div>
+	<script>
+		const API_URL = "https://fakestoreapi.com/products";
+		let products = [];
+		let activeCategory = "all";
+		let cart = [];
 
-        <div class="nav-actions">
-          <label class="search-wrap" aria-label="Search products">
-            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-              <path d="M10 2a8 8 0 105.06 13.67l4.43 4.43 1.41-1.41-4.43-4.43A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z"/>
-            </svg>
-            <input id="searchInput" type="search" placeholder="Search products" />
-          </label>
+		const grid = document.getElementById("productGrid");
+		const search = document.getElementById("search");
+		const sort = document.getElementById("sort");
+		const resultCount = document.getElementById("resultCount");
+		const categories = document.getElementById("categories");
 
-          <button class="cart-button" type="button" aria-label="Shopping cart">
-            <span>🛒</span>
-            <span id="cartCount" class="cart-count">0</span>
-          </button>
-        </div>
-      </div>
-    </header>
+		function money(value) { return `$${Number(value).toFixed(2)}`; }
+		function shorten(title) { return title.length > 43 ? `${title.slice(0, 43).trim()}...` : title; }
 
-    <main id="home">
-      <section class="hero">
-        <div class="container hero-grid">
-          <div class="hero-copy">
-            <span class="badge">Fresh arrivals</span>
-            <h1>Shop smarter. Live better.</h1>
-            <p>
-              Discover trending essentials, premium quality picks, and everyday favorites curated for modern living.
-            </p>
-            <div class="hero-actions">
-              <a href="#shop" class="primary-btn">Shop now</a>
-              <button class="secondary-btn" type="button">View collections</button>
-            </div>
-          </div>
+		function renderCategories() {
+			const labels = ["all", ...new Set(products.map(product => product.category))];
+			categories.innerHTML = labels.map(category => `<button class="category ${category === activeCategory ? "active" : ""}" data-category="${category}">${category === "all" ? "All pieces" : category}</button>`).join("");
+		}
 
-          <div class="hero-panel" aria-label="Store highlights">
-            <div class="feature-box">
-              <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <div class="feature-info">
-                  <strong>Fast delivery</strong>
-                  <span>Free shipping on orders over $50</span>
-                </div>
-              </div>
+		function visibleProducts() {
+			const query = search.value.toLowerCase().trim();
+			const filtered = products.filter(product => {
+				const matchesCategory = activeCategory === "all" || product.category === activeCategory;
+				return matchesCategory && `${product.title} ${product.category}`.toLowerCase().includes(query);
+			});
+			return filtered.sort((a, b) => {
+				if (sort.value === "low") return a.price - b.price;
+				if (sort.value === "high") return b.price - a.price;
+				if (sort.value === "rating") return b.rating.rate - a.rating.rate;
+				return a.id - b.id;
+			});
+		}
 
-              <div class="feature-card">
-                <div class="feature-icon">🛡️</div>
-                <div class="feature-info">
-                  <strong>Secure checkout</strong>
-                  <span>Protected payments and easy returns</span>
-                </div>
-              </div>
+		function renderProducts() {
+			const visible = visibleProducts();
+			resultCount.textContent = `${visible.length} ${visible.length === 1 ? "piece" : "pieces"}`;
+			grid.innerHTML = visible.length ? visible.map(product => `
+				<article class="product-card">
+					<div class="image-box"><img src="${product.image}" alt="${product.title}" loading="lazy" /><button class="add-button" data-add="${product.id}" type="button" aria-label="Add ${product.title} to bag">+</button></div>
+					<div class="product-info"><div class="product-category">${product.category}</div><div class="product-name" title="${product.title}">${shorten(product.title)}</div><div class="price-row"><span class="price">${money(product.price)}</span><span class="rating">★ ${product.rating.rate}</span></div></div>
+				</article>`).join("") : `<div class="status">No pieces match that search.<br /><button class="category" id="clearSearch" type="button">Clear search</button></div>`;
+		}
 
-              <div class="feature-card">
-                <div class="feature-icon">⭐</div>
-                <div class="feature-info">
-                  <strong>Top rated</strong>
-                  <span>Loved by 25K+ customers worldwide</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+		function renderCart() {
+			const count = cart.reduce((total, product) => total + product.quantity, 0);
+			document.getElementById("cartCount").textContent = count;
+			document.getElementById("cartTotal").textContent = money(cart.reduce((total, item) => total + item.price * item.quantity, 0));
+			document.getElementById("cartItems").innerHTML = cart.length ? cart.map(item => `<div class="cart-item"><img src="${item.image}" alt="" /><div class="cart-item-info"><strong>${shorten(item.title)}</strong>${money(item.price)} · Qty ${item.quantity}<br /><button class="remove" data-remove="${item.id}" type="button">Remove</button></div></div>`).join("") : `<div class="status">Your bag is waiting for something good.</div>`;
+		}
 
-      <section class="catalog" id="shop">
-        <div class="container">
-          <div class="catalog-header">
-            <h2>Featured products</h2>
-            <div id="categoryFilters" class="filter-group" aria-label="Product categories"></div>
-          </div>
+		function addToCart(id) { const existing = cart.find(item => item.id === id); if (existing) existing.quantity += 1; else cart.push({ ...products.find(product => product.id === id), quantity: 1 }); renderCart(); }
 
-          <div id="loading" class="loading" aria-live="polite">
-            <div class="spinner"></div>
-            <div>Loading products...</div>
-          </div>
+		async function loadProducts() {
+			try { const response = await fetch(API_URL); if (!response.ok) throw new Error("Request failed"); products = await response.json(); renderCategories(); renderProducts(); }
+			catch (error) { resultCount.textContent = ""; grid.innerHTML = `<div class="status">We couldn't load the collection right now.<br /><button class="category" onclick="loadProducts()" type="button">Try again</button></div>`; }
+		}
 
-          <div id="productGrid" class="products-grid" aria-live="polite"></div>
-        </div>
-      </section>
-    </main>
-
-    <script src="script.js"></script>
-  </body>
+		search.addEventListener("input", renderProducts);
+		sort.addEventListener("change", renderProducts);
+		categories.addEventListener("click", event => { if (!event.target.dataset.category) return; activeCategory = event.target.dataset.category; renderCategories(); renderProducts(); });
+		grid.addEventListener("click", event => { if (event.target.dataset.add) addToCart(Number(event.target.dataset.add)); if (event.target.id === "clearSearch") { search.value = ""; renderProducts(); } });
+		document.getElementById("cartItems").addEventListener("click", event => { if (event.target.dataset.remove) { cart = cart.filter(item => item.id !== Number(event.target.dataset.remove)); renderCart(); } });
+		document.getElementById("cartToggle").addEventListener("click", () => document.getElementById("drawerBackdrop").classList.add("open"));
+		document.getElementById("closeCart").addEventListener("click", () => document.getElementById("drawerBackdrop").classList.remove("open"));
+		document.getElementById("drawerBackdrop").addEventListener("click", event => { if (event.target.id === "drawerBackdrop") event.currentTarget.classList.remove("open"); });
+		loadProducts();
+	</script>
+</body>
 </html>
